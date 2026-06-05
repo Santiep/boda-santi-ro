@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Nuestra Boda · Save the Date</title>
+
+<!--
+═══════════════════════════════════════════════════════════════════
+  GUÍA RÁPIDA DE EDICIÓN  —  cambia solo lo que está entre [CORCHETES]
+═══════════════════════════════════════════════════════════════════
+  1. NOMBRES        → busca [NOMBRE NOVIA] y [NOMBRE NOVIO]
+  2. FECHA VISIBLE  → busca [SÁBADO 12 DE OCTUBRE DE 2026]
+  3. CUENTA REGRESIVA → más abajo en el bloque de código (script), edita esta línea:
+        const fechaBoda = new Date("2026-10-12T17:00:00");
+  4. CEREMONIA y RECEPCIÓN → busca [LUGAR ...], [DIRECCIÓN ...], [HORA ...]
+  5. MAPAS          → busca los enlaces href="https://maps.google.com/?q=..."
+                      y reemplaza con la dirección de cada lugar
+  6. RSVP (Google Form) → busca href="REEMPLAZA_CON_TU_GOOGLE_FORM"
+  7. MESA DE REGALOS y HOSPEDAJE → edita el texto de esas secciones
+  8. FOTOS → crea una carpeta llamada "images" en tu repositorio y sube
+        tus fotos con ESTOS nombres exactos:
+          images/portada.jpg      (foto principal, arriba)
+          images/historia-1.jpg   images/historia-2.jpg
+          images/galeria-1.jpg ... images/galeria-6.jpg
+        Mientras no existan, se muestra un marco con "Foto" de relleno.
+  9. CONTRASEÑA → en el bloque de código (script) al final, edita la línea:
+        const PASSWORD = "NuestraBoda2026";
+     Comparte esa contraseña junto con el enlace a tus invitados.
+═══════════════════════════════════════════════════════════════════
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --blush:#eccfca;
+    --rose:#cf9b95;
+    --rose-deep:#b67d77;
+    --sage:#aab79c;
+    --sage-deep:#7e8d70;
+    --terracotta:#d49e84;
+    --cream:#f8f2ea;
+    --ivory:#fffdf8;
+    --gold:#c4a266;
+    --ink:#5b524b;
+    --ink-soft:#928678;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Jost',sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.75;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+
+  /* paper grain overlay */
+  body::after{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;z-index:9999;
+    opacity:.4;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacing:.02em}
+  .script{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;letter-spacing:.01em}
+
+  .eyebrow{
+    font-family:'Jost',sans-serif;font-weight:400;
+    text-transform:uppercase;letter-spacing:.42em;
+    font-size:.72rem;color:var(--rose-deep);
+  }
+
+  /* ── NAV ── */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;justify-content:center;gap:2.4rem;
+    padding:1.4rem 1rem;
+    transition:background .5s ease, padding .5s ease, box-shadow .5s ease;
+  }
+  nav.scrolled{
+    background:rgba(248,242,234,.92);
+    backdrop-filter:blur(8px);
+    padding:.9rem 1rem;
+    box-shadow:0 6px 30px rgba(91,82,75,.07);
+  }
+  nav a{
+    text-decoration:none;color:var(--ink);
+    font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;
+    font-weight:400;opacity:.8;transition:opacity .3s, color .3s;
+  }
+  nav a:hover{opacity:1;color:var(--rose-deep)}
+  @media(max-width:680px){
+    nav{gap:1rem;font-size:.7rem;flex-wrap:wrap}
+    nav a{font-size:.62rem;letter-spacing:.14em}
+  }
+
+  /* ── soft watercolor blooms (decorative) ── */
+  .bloom{position:absolute;border-radius:50%;filter:blur(45px);opacity:.5;pointer-events:none;z-index:0}
+
+  section{position:relative;z-index:1}
+
+  /* ── HERO ── */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:7rem 1.5rem 4rem;position:relative;overflow:hidden;
+    background:
+      radial-gradient(60% 50% at 15% 10%, rgba(236,207,202,.55), transparent 70%),
+      radial-gradient(50% 45% at 88% 18%, rgba(170,183,156,.45), transparent 70%),
+      radial-gradient(55% 50% at 80% 90%, rgba(212,158,132,.4), transparent 70%),
+      radial-gradient(50% 45% at 10% 88%, rgba(207,155,149,.4), transparent 70%),
+      var(--cream);
+  }
+  .hero .eyebrow{margin-bottom:1.6rem}
+  .hero .ampersand{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:clamp(2rem,6vw,3.4rem);color:var(--gold);
+    margin:.1em 0;display:block;
+  }
+  .couple{
+    font-family:'Cormorant Garamond',serif;font-weight:500;
+    text-transform:uppercase;letter-spacing:.06em;
+    font-size:clamp(2.6rem,9vw,5.4rem);
+    color:var(--ink);line-height:1.02;
+  }
+  .hero .date{
+    margin-top:2.4rem;font-family:'Cormorant Garamond',serif;
+    font-size:clamp(1.1rem,3vw,1.5rem);letter-spacing:.32em;
+    text-transform:uppercase;color:var(--rose-deep);
+  }
+  .hero .place{margin-top:.6rem;letter-spacing:.28em;text-transform:uppercase;font-size:.8rem;color:var(--ink-soft)}
+
+  .divider{display:flex;align-items:center;justify-content:center;gap:1rem;margin:2.2rem auto;max-width:240px}
+  .divider span{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rose),transparent)}
+  .divider svg{width:30px;height:30px;color:var(--sage-deep)}
+
+  /* ── COUNTDOWN ── */
+  .countdown{display:flex;gap:1.6rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+  .count-box{min-width:74px}
+  .count-num{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,6vw,3.2rem);color:var(--ink);line-height:1}
+  .count-label{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);margin-top:.4rem}
+
+  /* ── GENERAL SECTION ── */
+  .section{padding:6.5rem 1.5rem;max-width:1080px;margin:0 auto;text-align:center}
+  .section h2{font-size:clamp(2.2rem,6vw,3.4rem);color:var(--ink);margin-bottom:.4rem}
+  .section .script-accent{font-size:clamp(2.4rem,7vw,3.4rem);color:var(--rose-deep);margin-bottom:.6rem}
+  .lead{max-width:560px;margin:1.4rem auto 0;font-size:1.05rem;color:var(--ink-soft)}
+
+  .band{background:var(--ivory)}
+  .band-sage{
+    background:
+      radial-gradient(50% 60% at 0% 0%, rgba(170,183,156,.35), transparent 60%),
+      radial-gradient(45% 55% at 100% 100%, rgba(236,207,202,.4), transparent 60%),
+      var(--ivory);
+  }
+
+  /* ── DETAILS CARDS ── */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem;text-align:center}
+  .card{
+    background:var(--cream);
+    border:1px solid rgba(196,162,102,.28);
+    border-radius:4px;
+    padding:3rem 2rem;position:relative;
+    transition:transform .5s ease, box-shadow .5s ease;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(91,82,75,.1)}
+  .card .icon{color:var(--sage-deep);margin-bottom:1.2rem;display:inline-block}
+  .card h3{font-size:1.9rem;color:var(--rose-deep);margin-bottom:.2rem}
+  .card .when{letter-spacing:.2em;text-transform:uppercase;font-size:.78rem;color:var(--ink-soft);margin-bottom:1.2rem}
+  .card .where{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink)}
+  .card .addr{font-size:.92rem;color:var(--ink-soft);margin-top:.3rem}
+
+  .btn{
+    display:inline-block;text-decoration:none;cursor:pointer;
+    font-family:'Jost',sans-serif;font-weight:400;
+    letter-spacing:.2em;text-transform:uppercase;font-size:.74rem;
+    padding:.95rem 2.2rem;border:1px solid var(--rose-deep);
+    color:var(--rose-deep);background:transparent;border-radius:2px;
+    transition:background .4s ease, color .4s ease;margin-top:1.6rem;
+  }
+  .btn:hover{background:var(--rose-deep);color:var(--ivory)}
+  .btn-solid{background:var(--rose-deep);color:var(--ivory)}
+  .btn-solid:hover{background:var(--ink);border-color:var(--ink)}
+
+  /* ── DRESS CODE ── */
+  .swatches{display:flex;gap:1rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}
+  .swatch{width:48px;height:48px;border-radius:50%;box-shadow:0 4px 14px rgba(91,82,75,.15)}
+
+  /* ── RSVP ── */
+  .rsvp{
+    background:
+      radial-gradient(60% 70% at 50% 0%, rgba(236,207,202,.55), transparent 65%),
+      var(--cream);
+    text-align:center;
+  }
+  .rsvp .deadline{margin-top:1.2rem;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--sage-deep)}
+
+  /* ── FOOTER ── */
+  footer{
+    text-align:center;padding:5rem 1.5rem 3.5rem;background:var(--ivory);
+    position:relative;overflow:hidden;
+  }
+  footer .couple-small{font-family:'Cormorant Garamond',serif;font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:clamp(2rem,7vw,3.4rem);color:var(--ink)}
+  footer .hashtag{margin-top:1rem;letter-spacing:.3em;text-transform:uppercase;font-size:.74rem;color:var(--rose-deep)}
+  footer .small{margin-top:2rem;font-size:.72rem;color:var(--ink-soft);letter-spacing:.1em}
+
+  /* ── reveal animation ── */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s ease, transform 1s ease}
+  .reveal.in{opacity:1;transform:none}
+  .hero .reveal{transition-delay:var(--d,0s)}
+
+  /* ── FOTOS ── */
+  .photo-frame{
+    position:relative;overflow:hidden;
+    background:linear-gradient(135deg,var(--blush),var(--sage));
+    box-shadow:0 18px 45px rgba(91,82,75,.16);
+    border:6px solid var(--ivory);
+    outline:1px solid rgba(196,162,102,.4);
+  }
+  .photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .photo-frame .photo-ph{
+    display:none;position:absolute;inset:0;
+    align-items:center;justify-content:center;flex-direction:column;gap:.6rem;
+    color:var(--ivory);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  }
+  .photo-frame.empty .photo-ph{display:flex}
+
+  .hero-portrait{
+    width:min(280px,68vw);aspect-ratio:3/4;
+    border-radius:200px 200px 8px 8px;margin:0 auto 2.6rem;
+  }
+  .story-photos{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:1.4rem;margin:2.8rem auto 0;max-width:620px;
+  }
+  .story-photos .photo-frame{aspect-ratio:1;border-radius:4px}
+  .gallery{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1.4rem;margin-top:3rem;
+  }
+  .gallery .photo-frame{aspect-ratio:4/5;border-radius:4px}
+
+  /* ── PANTALLA DE CONTRASEÑA ── */
+  body.locked{overflow:hidden}
+  .gate{
+    position:fixed;inset:0;z-index:10000;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:2rem;overflow:hidden;
+    transition:opacity .8s ease, visibility .8s ease;
+    background:
+      radial-gradient(60% 50% at 18% 12%, rgba(236,207,202,.6), transparent 70%),
+      radial-gradient(55% 50% at 85% 20%, rgba(170,183,156,.5), transparent 70%),
+      radial-gradient(55% 50% at 82% 88%, rgba(212,158,132,.45), transparent 70%),
+      var(--cream);
+  }
+  .gate.open{opacity:0;visibility:hidden;pointer-events:none}
+  .gate-inner{max-width:440px;position:relative;z-index:1}
+  .gate .eyebrow{margin-bottom:.6rem}
+  .gate-names{
+    font-family:'Cormorant Garamond',serif;font-weight:500;
+    text-transform:uppercase;letter-spacing:.06em;
+    font-size:clamp(1.8rem,6vw,2.8rem);color:var(--ink);
+    line-height:1.1;margin-bottom:1.3rem;
+  }
+  .gate-text{color:var(--ink-soft);font-size:1rem;margin-bottom:1.9rem}
+  .gate-field{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+  .gate-field input{
+    font-family:'Jost',sans-serif;font-size:1rem;
+    padding:.85rem 1.2rem;min-width:220px;
+    border:1px solid rgba(196,162,102,.55);border-radius:2px;
+    background:var(--ivory);color:var(--ink);
+    letter-spacing:.05em;text-align:center;outline:none;
+    transition:border-color .3s ease;
+  }
+  .gate-field input:focus{border-color:var(--rose-deep)}
+  .gate-field .btn{margin-top:0}
+  .gate-error{color:var(--rose-deep);font-size:.85rem;margin-top:1.1rem;min-height:1.2em;opacity:0;transition:opacity .3s}
+  .gate-error.show{opacity:1}
+  .gate.shake .gate-inner{animation:shake .42s}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+</style>
+</head>
+<body class="locked">
+
+<!-- ════════════ PANTALLA DE CONTRASEÑA ════════════ -->
+<div class="gate" id="gate">
+  <div class="bloom" style="width:300px;height:300px;background:var(--blush);top:-60px;left:-70px"></div>
+  <div class="bloom" style="width:260px;height:260px;background:var(--sage);bottom:-50px;right:-50px"></div>
+  <div class="gate-inner">
+    <p class="eyebrow">Nos casamos</p>
+    <p class="gate-names">ROCIO BERNARDINI &amp; SANTIAGO PEREZ</p>
+    <p class="gate-text">Esta invitación es privada. Ingresa la contraseña que te compartimos junto con el enlace para ver los detalles de nuestra boda.</p>
+    <div class="gate-field">
+      <input id="pw" type="password" placeholder="Contraseña" autocomplete="off" aria-label="Contraseña">
+      <button id="pw-btn" class="btn btn-solid">Entrar</button>
+    </div>
+    <p class="gate-error" id="pw-error">Contraseña incorrecta. Inténtalo de nuevo.</p>
+  </div>
+</div>
+
+<!-- ════════════ NAV ════════════ -->
+<nav id="nav">
+  <a href="#inicio">Inicio</a>
+  <a href="#historia">Historia</a>
+  <a href="#detalles">Detalles</a>
+  <a href="#vestimenta">Vestimenta</a>
+  <a href="#rsvp">Asistencia</a>
+  <a href="#regalos">Regalos</a>
+  <a href="#galeria">Galería</a>
+</nav>
+
+<!-- ════════════ HERO / SAVE THE DATE ════════════ -->
+<section class="hero" id="inicio">
+  <div class="bloom" style="width:340px;height:340px;background:var(--blush);top:-60px;left:-80px"></div>
+  <div class="bloom" style="width:300px;height:300px;background:var(--sage);bottom:-60px;right:-60px"></div>
+
+  <p class="eyebrow reveal" style="--d:.1s">Nos casamos · Save the Date</p>
+  <!-- FOTO PRINCIPAL: sube tu imagen como images/portada.jpg -->
+  <div class="photo-frame hero-portrait reveal" style="--d:.18s">
+    <img src="images/portada.jpg" alt="Foto de la pareja" onerror="this.style.display='none';this.parentElement.classList.add('empty')">
+    <span class="photo-ph">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L19 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>
+      Nuestra foto
+    </span>
+  </div>
+  <h1 class="reveal" style="--d:.25s">
+    <span class="couple">ROCIO BERNARDINI</span>
+    <span class="ampersand">&amp;</span>
+    <span class="couple">SANTIAGO PEREZ</span>
+  </h1>
+
+  <div class="divider reveal" style="--d:.4s">
+    <span></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21c-4-3-8-6-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 5-4 8-8 11z"/></svg>
+    <span></span>
+  </div>
+
+  <p class="date reveal" style="--d:.5s">[SÁBADO 12 DE OCTUBRE DE 2026]</p>
+  <p class="place reveal" style="--d:.58s">[CIUDAD, ESTADO]</p>
+
+  <div class="countdown reveal" style="--d:.7s" id="countdown">
+    <div class="count-box"><div class="count-num" id="cd-days">--</div><div class="count-label">Días</div></div>
+    <div class="count-box"><div class="count-num" id="cd-hours">--</div><div class="count-label">Horas</div></div>
+    <div class="count-box"><div class="count-num" id="cd-mins">--</div><div class="count-label">Minutos</div></div>
+    <div class="count-box"><div class="count-num" id="cd-secs">--</div><div class="count-label">Segundos</div></div>
+  </div>
+</section>
+
+<!-- ════════════ NUESTRA HISTORIA ════════════ -->
+<section class="section band" id="historia">
+  <p class="eyebrow reveal">El comienzo de todo</p>
+  <h2 class="script script-accent reveal">Nuestra historia</h2>
+  <p class="lead reveal">
+   NOS CONOCIMOS DURANTE LA MACRISIS EN LA UNIVERSIDAD DE BUENOS AIRES! CONTEMOS ALGUNA ANECDOTA PIOLA ACA RO JIJI
+  </p>
+  <p class="lead reveal" style="margin-top:1.2rem;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--sage-deep)">
+    «Y después de tanto camino, decidimos recorrer el resto juntos.»
+  </p>
+
+  <!-- FOTOS DE LA HISTORIA: images/historia-1.jpg y images/historia-2.jpg -->
+  <div class="story-photos">
+    <div class="photo-frame reveal">
+      <img src="images/historia-1.jpg" alt="Recuerdo 1" onerror="this.style.display='none';this.parentElement.classList.add('empty')">
+      <span class="photo-ph">Foto</span>
+    </div>
+    <div class="photo-frame reveal">
+      <img src="images/historia-2.jpg" alt="Recuerdo 2" onerror="this.style.display='none';this.parentElement.classList.add('empty')">
+      <span class="photo-ph">Foto</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ DETALLES ════════════ -->
+<section class="section band-sage" id="detalles">
+  <p class="eyebrow reveal">Cuándo y dónde</p>
+  <h2 class="script script-accent reveal">Los detalles</h2>
+
+  <div class="cards">
+    <!-- CEREMONIA -->
+    <div class="card reveal">
+      <span class="icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M12 2v6m0 0L8 12m4-4 4 4M5 22V12h14v10M9 22v-5h6v5"/></svg>
+      </span>
+      <h3>Ceremonia</h3>
+      <p class="when">[HORA · 4:00 PM]</p>
+      <p class="where">[CATEDRAL DE SAN ISIDRO]</p>
+      <p class="addr">[PONER Dirección]</p>
+      <a class="btn" href="https://maps.google.com/?q=DIRECCION+DE+LA+CEREMONIA" target="_blank" rel="noopener">Ver mapa</a>
+    </div>
+
+    <!-- RECEPCIÓN -->
+    <div class="card reveal">
+      <span class="icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M7 2v6a3 3 0 0 0 6 0V2M10 11v9M5 22h10M17 2c2 0 3 2 3 5s-1 5-3 5V2z"/></svg>
+      </span>
+      <h3>Recepción</h3>
+      <p class="when">[HORA · 6:00 PM]</p>
+      <p class="where">[HOTEL VILLA VICTORIA]</p>
+      <p class="addr">[PONER Dirección BIEN]</p>
+      <a class="btn" href="https://maps.google.com/?q=DIRECCION+DE+LA+RECEPCION" target="_blank" rel="noopener">Ver mapa</a>
+    </div>
+  </div>
+
+  <a class="btn btn-solid reveal" style="margin-top:2.6rem" href="https://calendar.google.com/calendar/r/eventedit?text=Boda+de+[NOMBRES]&dates=20261012T230000Z/20261013T040000Z" target="_blank" rel="noopener">Agregar al calendario</a>
+</section>
+
+<!-- ════════════ CÓDIGO DE VESTIMENTA ════════════ -->
+<section class="section band" id="vestimenta">
+  <p class="eyebrow reveal">Para la ocasión</p>
+  <h2 class="script script-accent reveal">Código de vestimenta</h2>
+  <p class="lead reveal">[Formal VISTANSE PIOLA]</p>
+  <p class="lead reveal" style="margin-top:.6rem">Una sugerencia de paleta para acompañar la celebración: (ESTO SUGIRIO CLAUDE ME PARECE TOO MUCH)</p>
+  <div class="swatches reveal">
+    <span class="swatch" style="background:var(--blush)"></span>
+    <span class="swatch" style="background:var(--rose)"></span>
+    <span class="swatch" style="background:var(--sage)"></span>
+    <span class="swatch" style="background:var(--terracotta)"></span>
+    <span class="swatch" style="background:var(--gold)"></span>
+  </div>
+  <p class="lead reveal" style="margin-top:1.4rem;font-size:.92rem;font-style:italic">
+    Reservar el color blanco para la novia. 🤍 
+  </p>
+</section>
+
+<!-- ════════════ RSVP ════════════ -->
+<section class="section rsvp" id="rsvp">
+  <div class="bloom" style="width:260px;height:260px;background:var(--blush);top:-40px;right:-40px"></div>
+  <p class="eyebrow reveal">Tu presencia es nuestro mejor regalo (DANOS PLATA POR FAVOR)</p>
+  <h2 class="script script-accent reveal">Confirma tu asistencia</h2>
+  <p class="lead reveal">
+    Nos pone muy felices poder compartir con ustedes! Por favor confírmanos tu asistencia
+    llenando el siguiente formulario.
+  </p>
+  <!-- 👇 REEMPLAZA el href con el enlace de tu Google Form -->
+  <a class="btn btn-solid reveal" href="REEMPLAZA_CON_TU_GOOGLE_FORM" target="_blank" rel="noopener">Confirmar asistencia</a>
+  <p class="deadline reveal">Fecha límite: [1 de agosto de 2026]</p>
+</section>
+
+<!-- ════════════ MESA DE REGALOS ════════════ -->
+<section class="section band-sage" id="regalos">
+  <p class="eyebrow reveal">Con todo cariño</p>
+  <h2 class="script script-accent reveal">Mesa de regalos</h2>
+  <p class="lead reveal">
+    [ACA TIRAMOS ALIAS?]
+  </p>
+  <a class="btn reveal" href="#" target="_blank" rel="noopener">Ver mesa de regalos</a>
+</section>
+
+<!-- ════════════ HOSPEDAJE ════════════ -->
+<section class="section band" id="hospedaje">
+  <p class="eyebrow reveal">Si vienes de fuera</p>
+  <h2 class="script script-accent reveal">Hospedaje &amp; cómo llegar</h2>
+  <p class="lead reveal">
+    [MODIFIQUE UN TEMPLATE YANKEE]
+  </p>
+</section>
+
+<!-- ════════════ GALERÍA ════════════ -->
+<section class="section band-sage" id="galeria">
+  <p class="eyebrow reveal">Algunos de nuestros momentos</p>
+  <h2 class="script script-accent reveal">Galería</h2>
+  <p class="lead reveal">[Sube tus fotos como images/galeria-1.jpg, galeria-2.jpg, etc. Puedes agregar o quitar cuadros según las fotos que tengas.]</p>
+
+  <!-- GALERÍA: archivos images/galeria-1.jpg ... galeria-6.jpg -->
+  <div class="gallery">
+    <div class="photo-frame reveal"><img src="images/galeria-1.jpg" alt="Galería 1" onerror="this.style.display='none';this.parentElement.classList.add('empty')"><span class="photo-ph">Foto</span></div>
+    <div class="photo-frame reveal"><img src="images/galeria-2.jpg" alt="Galería 2" onerror="this.style.display='none';this.parentElement.classList.add('empty')"><span class="photo-ph">Foto</span></div>
+    <div class="photo-frame reveal"><img src="images/galeria-3.jpg" alt="Galería 3" onerror="this.style.display='none';this.parentElement.classList.add('empty')"><span class="photo-ph">Foto</span></div>
+    <div class="photo-frame reveal"><img src="images/galeria-4.jpg" alt="Galería 4" onerror="this.style.display='none';this.parentElement.classList.add('empty')"><span class="photo-ph">Foto</span></div>
+    <div class="photo-frame reveal"><img src="images/galeria-5.jpg" alt="Galería 5" onerror="this.style.display='none';this.parentElement.classList.add('empty')"><span class="photo-ph">Foto</span></div>
+    <div class="photo-frame reveal"><img src="images/galeria-6.jpg" alt="Galería 6" onerror="this.style.display='none';this.parentElement.classList.add('empty')"><span class="photo-ph">Foto</span></div>
+  </div>
+</section>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer>
+  <div class="bloom" style="width:280px;height:280px;background:var(--sage);bottom:-80px;left:-60px;opacity:.4"></div>
+  <p class="couple-small">RO &amp; SANTI</p>
+  <p class="hashtag">#SANTIROBODAA · [17.04.2027]</p>
+  <p class="small">Hecho con cariño para nuestra boda</p>
+</footer>
+
+<script>
+  /* ─── CUENTA REGRESIVA ───
+     👇 Cambia esta fecha por la de tu boda (formato AAAA-MM-DDTHH:MM:SS) */
+  const fechaBoda = new Date("2027-04-17T16:00:00");
+
+  const el = id => document.getElementById(id);
+  function tick(){
+    const diff = fechaBoda - new Date();
+    if(diff <= 0){
+      el('countdown').innerHTML = '<p class="date" style="color:var(--rose-deep)">¡Hoy es el gran día!</p>';
+      return;
+    }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor(diff%86400000/3600000);
+    const m = Math.floor(diff%3600000/60000);
+    const s = Math.floor(diff%60000/1000);
+    el('cd-days').textContent  = d;
+    el('cd-hours').textContent = String(h).padStart(2,'0');
+    el('cd-mins').textContent  = String(m).padStart(2,'0');
+    el('cd-secs').textContent  = String(s).padStart(2,'0');
+  }
+  tick(); setInterval(tick,1000);
+
+  /* ─── NAV al hacer scroll ─── */
+  const nav = el('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('scrolled', scrollY>60));
+
+  /* ─── animaciones de aparición ─── */
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(r=>io.observe(r));
+
+  /* ─── CONTRASEÑA ───
+     👇 Cambia esta contraseña por la que darás a tus invitados.
+        Compártela junto con el enlace del sitio. */
+  const PASSWORD = "NuestraBoda2026";
+
+  (function(){
+    const gate  = el('gate');
+    const input = el('pw');
+    const btn   = el('pw-btn');
+    const err   = el('pw-error');
+    if(!gate) return;
+    input.focus();
+
+    function replayHero(){
+      const hs = document.querySelectorAll('.hero .reveal');
+      hs.forEach(x=>x.classList.remove('in'));
+      void document.body.offsetWidth;
+      requestAnimationFrame(()=>hs.forEach(x=>x.classList.add('in')));
+    }
+    function tryUnlock(){
+      if(input.value.trim().toLowerCase() === PASSWORD.toLowerCase()){
+        gate.classList.add('open');
+        document.body.classList.remove('locked');
+        replayHero();
+        setTimeout(()=>{ gate.style.display='none'; }, 850);
+      }else{
+        err.classList.add('show');
+        gate.classList.add('shake');
+        setTimeout(()=>gate.classList.remove('shake'), 460);
+        input.select();
+      }
+    }
+    btn.addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
+  })();
+</script>
+</body>
+</html>
